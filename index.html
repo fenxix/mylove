@@ -2,573 +2,292 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тебе эмоция ❤️</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Comfortaa:wght@400;600;700&family=Marck+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Marck+Script&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Comfortaa', cursive, sans-serif;
-            background-color: #0b030a;
-            color: #fce7f3;
+            font-family: 'Montserrat', sans-serif;
+            background: #0f051d;
+            color: #ffffff;
             overflow-x: hidden;
-            touch-action: manipulation;
         }
-
         .font-handwriting {
-            font-family: 'Marck Script', 'Caveat', cursive;
+            font-family: 'Caveat', cursive;
         }
-
-        /* Glowing background effects */
-        .glow-bg {
-            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.25) 0%, rgba(131, 24, 67, 0.15) 50%, rgba(11, 3, 10, 0.95) 100%);
+        .bg-glow {
+            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.25) 0%, rgba(15, 5, 29, 0.95) 70%);
         }
-
-        .glow-card {
-            background: rgba(35, 12, 28, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(244, 114, 182, 0.2);
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.15);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .glow-button {
-            background: linear-gradient(135deg, #ec4899, #be185d);
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
-            transition: all 0.3s ease;
+        .letter-paper {
+            background: #fffdf9;
+            color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: 'Marck Script', cursive;
         }
-
-        .glow-button:hover, .glow-button:active {
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7);
-            transform: translateY(-2px);
-        }
-
-        /* Envelope animations */
-        .envelope-wrapper {
-            perspective: 1000px;
-        }
-
-        .envelope {
-            position: relative;
-            background-color: #fbcfe8;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Heart particles */
-        @keyframes floatHeart {
-            0% {
-                transform: translateY(100vh) scale(0.5) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.8;
-            }
-            80% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-20vh) scale(1.2) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .floating-heart {
-            position: fixed;
+        .heart-particle {
+            position: absolute;
             pointer-events: none;
-            z-index: 0;
-            animation: floatHeart 8s linear infinite;
+            animation: floatUp 4s linear infinite;
         }
-
-        /* Custom scrollbar for letter */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(244, 114, 182, 0.05);
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(236, 72, 153, 0.4);
-            border-radius: 10px;
-        }
-
-        /* Fade transitions */
-        .page-step {
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .page-step.hidden-step {
-            display: none;
-            opacity: 0;
-            transform: scale(0.95);
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
     </style>
 </head>
-<body class="min-h-screen glow-bg flex flex-col items-center justify-center p-3 sm:p-6 relative select-none">
+<body class="min-h-screen bg-glow flex items-center justify-center p-4 relative overflow-y-auto">
 
-    <div id="particles-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+    <!-- ФОНОВЫЕ СЕРДЕЧКИ -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-    <!-- Main Mobile Container Frame -->
-    <main class="w-full max-w-md min-h-[620px] h-[92vh] max-h-[850px] flex flex-col justify-between relative z-10 glow-card rounded-3xl p-5 sm:p-7 border border-pink-500/20 overflow-hidden">
+    <!-- ЭКРАН 1: ПАРОЛЬ -->
+    <div id="screen-lock" class="w-full max-w-md glass-card rounded-3xl p-8 z-10 text-center shadow-2xl transition-all duration-500">
+        <h2 class="text-2xl font-light mb-2 text-pink-200">Эта эмоция закрыта словом</h2>
+        <p class="text-sm text-pink-300/70 italic mb-6">из-за чего мы все же познакомились?</p>
         
-        <!-- STEP 1: PASSWORD / SECRET WORD -->
-        <section id="step-1" class="page-step flex flex-col justify-center items-center my-auto w-full text-center space-y-7">
-            <div class="space-y-3">
-                <div class="inline-block p-3 rounded-full bg-pink-500/10 text-pink-400 mb-2">
-                    <svg class="w-8 h-8 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-pink-100 tracking-wide">Эта эмоция закрыта словом</h1>
-                <p class="text-pink-300/80 italic text-sm sm:text-base">из-за чего мы все же познакомились?</p>
-            </div>
-
-            <div class="w-full space-y-4 pt-2">
-                <input type="text" id="password-input" 
-                       placeholder="слово" 
-                       class="w-full px-5 py-4 rounded-2xl bg-black/40 border border-pink-500/30 text-center text-lg text-pink-100 placeholder-pink-400/40 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/50 transition-all">
-                
-                <button id="unlock-btn" 
-                        class="w-full py-4 rounded-2xl font-semibold text-white glow-button text-lg flex items-center justify-center space-x-2">
-                    <span>Открыть</span>
-                </button>
-                <p id="error-msg" class="text-red-400 text-sm hidden animate-bounce">Попробуй еще раз ❤️</p>
-            </div>
-        </section>
-
-        <!-- STEP 2: SECRET ENVELOPE & LETTER -->
-        <section id="step-2" class="page-step hidden-step flex flex-col justify-between h-full w-full my-auto text-center">
-            <div id="envelope-closed-state" class="flex flex-col items-center justify-center my-auto space-y-8">
-                <h2 class="text-2xl font-bold text-pink-200">Даяш,<br><span class="text-pink-400 font-light text-xl">тебе письмо</span></h2>
-                
-                <!-- Envelope Graphic -->
-                <div id="envelope-btn" class="cursor-pointer transform hover:scale-105 transition-transform duration-300">
-                    <div class="w-64 h-44 bg-gradient-to-br from-pink-200 to-pink-300 rounded-2xl shadow-2xl relative flex items-center justify-center border-2 border-pink-100">
-                        <!-- Envelope flap visual -->
-                        <div class="absolute top-0 inset-x-0 h-24 bg-pink-300/80 rounded-t-2xl clip-path-triangle border-b border-pink-400/20"></div>
-                        <!-- Wax seal -->
-                        <div class="w-14 h-14 bg-rose-600 rounded-full flex items-center justify-center shadow-lg border-2 border-rose-400 z-10 animate-pulse">
-                            <span class="text-white text-xs font-bold">Даша</span>
-                        </div>
-                    </div>
-                    <p class="text-pink-300/80 italic text-sm mt-6">открой, это тебе ✨</p>
-                </div>
-            </div>
-
-            <!-- Opened Letter Content (Hidden by default) -->
-            <div id="letter-open-state" class="hidden flex-col h-full w-full space-y-4">
-                <div class="text-pink-300 text-xs uppercase tracking-widest pt-1">это тебе, Даша</div>
-                
-                <!-- Letter Paper Container -->
-                <div class="bg-amber-50/95 text-stone-800 rounded-2xl p-5 text-left custom-scrollbar overflow-y-auto flex-1 shadow-inner border border-amber-200 space-y-4">
-                    <h3 class="font-handwriting text-2xl text-rose-800 font-bold border-b border-rose-200 pb-2">Даша, с днём рождения! ❤️</h3>
-                    
-                    <p class="font-handwriting text-xl leading-relaxed text-stone-800">
-                        Даяш, я очень тебя сильно люблю, и очень хочу с тобой прожить всю оставшуюся жизнь.<br>
-                        хочу чтобы у нас были детки, лилу, и глупенькая собачка ( потомушо лилу умная )<br>
-                        хочу пожениться на тебе, сделать тебя счастливой, хочу подарить тебе все счастья мира, и показать всю свою любовь.<br>
-                        я очень рад что ты появилась в моей жизни.
-                    </p>
-
-                    <p class="font-handwriting text-xl leading-relaxed text-stone-800">
-                        ты очень красивая, умненькая и смешная.
-                    </p>
-
-                    <div class="space-y-1 font-handwriting text-xl leading-relaxed text-stone-800 bg-pink-100/50 p-3 rounded-xl border border-pink-200">
-                        <p class="font-bold text-rose-700">красивая потомучто у тебя все очень и очень красивое:</p>
-                        <p>• твои волшебные глазки 👁️✨</p>
-                        <p>• твой прекрасный носик 👃💕</p>
-                        <p>• твоя очаровательная улыбка 😊</p>
-                        <p>• очень мягкие волосы 💆‍♀️</p>
-                        <p>• и завораживающие губы 💋</p>
-                        <p class="text-rose-800 italic mt-1">я очень хочу чтобы ты увидела себя моими глазами.</p>
-                    </div>
-
-                    <p class="font-handwriting text-xl leading-relaxed text-stone-800">
-                        <strong class="text-rose-700">умненькая</strong> потомучто ты меня всему научила, всё рассказываешь, что тебе не расскажи все знаешь, уже и не помню что я тебе рассказывал что ты не знала.<br>
-                        даже на счёт программирования ты знала базу. 💻
-                    </p>
-
-                    <p class="font-handwriting text-xl leading-relaxed text-stone-800">
-                        <strong class="text-rose-700">смешная</strong> потомучто ты всегда меня смешишь, хоть и не показываю это иногда, ты очень и очень смешная, мне в тебе это очень нравится, у нас похожий юмор. 😂
-                    </p>
-
-                    <p class="font-handwriting text-xl leading-relaxed text-stone-800">
-                        ты самый светлый человек в моей жизни, мой типаж, мой лучик солнышка, с тобой всегда так тепло и хорошо, хочу чтобы это никогда не заканчивалось. ☀️✨
-                    </p>
-
-                    <!-- Joint Photo inside the Letter -->
-                    <div class="pt-2">
-                        <div class="p-2 bg-white rounded-xl shadow-md transform -rotate-1 border border-stone-200">
-                            <img id="joint-photo" src="24698.jpg" alt="Мы вместе" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://placehold.co/600x400/be185d/ffffff?text=Мы+вместе+❤️'">
-                            <p class="text-center font-handwriting text-lg text-stone-600 mt-1">мы вместе ❤️</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button id="to-step-3-btn" class="w-full py-3.5 rounded-2xl font-semibold text-white glow-button text-base mt-2">
-                    Хорошо ❤️
-                </button>
-            </div>
-        </section>
-
-        <!-- STEP 3: DATE & TIME SELECTOR -->
-        <section id="step-3" class="page-step hidden-step flex flex-col justify-between h-full w-full text-center my-auto">
-            
-            <!-- Subsection 3A: Activity Selection -->
-            <div id="sub-3a" class="flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-2 pt-2">
-                    <span class="text-3xl">💖</span>
-                    <h2 class="text-2xl font-bold text-pink-100">Что будем делать?</h2>
-                    <p class="text-pink-300/70 text-xs">Выбери наше идеальное свидание</p>
-                </div>
-
-                <div class="space-y-3 my-auto">
-                    <button class="activity-opt w-full py-4 px-5 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 hover:bg-pink-800/40 text-left font-medium flex items-center space-x-3 transition-all" data-activity="Компы 💻">
-                        <span class="text-2xl">💻</span>
-                        <span>Компы</span>
-                    </button>
-                    <button class="activity-opt w-full py-4 px-5 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 hover:bg-pink-800/40 text-left font-medium flex items-center space-x-3 transition-all" data-activity="Кино 🍿">
-                        <span class="text-2xl">🍿</span>
-                        <span>Кино</span>
-                    </button>
-                    <button class="activity-opt w-full py-4 px-5 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 hover:bg-pink-800/40 text-left font-medium flex items-center space-x-3 transition-all" data-activity="Сходить покушать 🍕">
-                        <span class="text-2xl">🍕</span>
-                        <span>Сходить покушать</span>
-                    </button>
-                    <button class="activity-opt w-full py-4 px-5 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 hover:bg-pink-800/40 text-left font-medium flex items-center space-x-3 transition-all" data-activity="Погулять вместе и хорошо провести время ✨">
-                        <span class="text-2xl">✨</span>
-                        <span>Погулять вместе и хорошо провести время</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Subsection 3B: Date Pick -->
-            <div id="sub-3b" class="hidden flex-col justify-between h-full space-y-4">
-                <div class="space-y-2 pt-2">
-                    <h2 class="text-2xl font-bold text-pink-100">Когда?</h2>
-                    <p class="text-pink-300/70 text-xs">Выбери удобный день</p>
-                </div>
-
-                <div class="space-y-3 my-auto" id="date-options-container">
-                    <!-- Dynamic Date Buttons injected by JS -->
-                </div>
-
-                <button id="to-time-btn" class="w-full py-4 rounded-2xl font-semibold text-white glow-button text-lg opacity-50 cursor-not-allowed" disabled>
-                    Дальше
-                </button>
-            </div>
-
-            <!-- Subsection 3C: Time Pick -->
-            <div id="sub-3c" class="hidden flex-col justify-between h-full space-y-4">
-                <div class="space-y-2 pt-2">
-                    <h2 class="text-2xl font-bold text-pink-100">Во сколько?</h2>
-                    <p class="text-pink-300/70 text-xs">Выбери время нашей встречи</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 my-auto" id="time-options-container">
-                    <button class="time-opt py-3.5 px-4 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 text-center font-semibold">17:00</button>
-                    <button class="time-opt py-3.5 px-4 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 text-center font-semibold">18:00</button>
-                    <button class="time-opt py-3.5 px-4 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 text-center font-semibold">19:00</button>
-                    <button class="time-opt py-3.5 px-4 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 text-center font-semibold">20:00</button>
-                </div>
-
-                <button id="to-step-4-btn" class="w-full py-4 rounded-2xl font-semibold text-white glow-button text-lg opacity-50 cursor-not-allowed" disabled>
-                    Готово ❤️
-                </button>
-            </div>
-        </section>
-
-        <!-- STEP 4: PORTRAIT MATRIX ART & SUMMARY -->
-        <section id="step-4" class="page-step hidden-step flex flex-col justify-between h-full w-full text-center my-auto space-y-3">
-            
-            <!-- Canvas Container for Her ASCII Matrix Canvas -->
-            <div class="relative w-full aspect-[4/5] max-h-[360px] rounded-2xl overflow-hidden bg-black/80 border border-pink-500/30 flex items-center justify-center">
-                <canvas id="ascii-canvas" class="w-full h-full object-cover"></canvas>
-                
-                <!-- Floating Love Count overlay -->
-                <div class="absolute bottom-2 left-2 right-2 bg-black/60 backdrop-blur-md py-1 px-3 rounded-lg border border-pink-500/20 text-xs text-pink-200 font-handwriting text-center">
-                    по <span id="counter-num" class="text-pink-400 font-bold text-sm">0</span> раз думаю о тебе каждый день Даша)
-                </div>
-            </div>
-
-            <!-- Invitation Summary Card -->
-            <div class="bg-pink-950/50 border border-pink-500/30 rounded-2xl p-4 text-left space-y-2">
-                <div class="text-xs uppercase tracking-widest text-pink-400 font-bold">Выходим</div>
-                <div id="summary-activity" class="text-base font-semibold text-pink-100 flex items-center space-x-2">
-                    <span>✨</span><span>Погулять вместе</span>
-                </div>
-                <div id="summary-datetime" class="text-xs text-pink-300/80 flex items-center space-x-1">
-                    <span>📅</span><span>Среда, 14 октября • 19:00</span>
-                </div>
-            </div>
-
-            <button id="share-btn" class="w-full py-3.5 rounded-2xl font-semibold text-white glow-button text-base flex items-center justify-center space-x-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                </svg>
-                <span>Сохранить выбор ❤️</span>
+        <form onsubmit="handleUnlock(event)" class="space-y-4">
+            <input type="text" id="answer-input" placeholder="слово" autocomplete="off"
+                   class="w-full bg-white/10 border border-pink-500/30 rounded-2xl px-5 py-3 text-center text-white placeholder-pink-300/40 focus:outline-none focus:border-pink-400 transition-all">
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-medium py-3 rounded-2xl shadow-lg transition-all active:scale-95">
+                Открыть
             </button>
-        </section>
+        </form>
+        <p id="error-msg" class="text-red-400 text-xs mt-3 hidden">Неправильно, подумай еще раз 💕</p>
+    </div>
 
-    </main>
+    <!-- ЭКРАН 2: КОНВЕРТ -->
+    <div id="screen-envelope" class="w-full max-w-md z-10 text-center hidden transition-all duration-500">
+        <h2 class="text-xl text-pink-200 font-light mb-2">Даша,</h2>
+        <p class="text-sm text-pink-300/70 mb-8">тебе письмо</p>
+        
+        <div onclick="openLetter()" class="cursor-pointer group relative mx-auto w-64 h-44 bg-pink-100/10 border border-pink-300/30 rounded-2xl flex items-center justify-center shadow-2xl backdrop-blur-md transition-transform hover:scale-105">
+            <div class="text-5xl animate-bounce">✉️</div>
+            <div class="absolute bottom-3 text-xs text-pink-300/80 font-handwriting text-lg">открой, это тебе</div>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 3: ПИСЬМО С ФОТО -->
+    <div id="screen-letter" class="w-full max-w-lg z-10 hidden transition-all duration-500 my-8">
+        <div class="letter-paper rounded-3xl p-6 sm:p-8 space-y-4 text-lg sm:text-xl leading-relaxed">
+            <div class="text-right text-sm text-gray-500 font-sans">ЭТО ТЕБЕ, ДАША</div>
+            
+            <p>Даяш, я очень тебя сильно люблю, и очень хочу с тобой прожить всю оставшуюся жизнь.</p>
+            <p>Хочу чтобы у нас были детки, Лилу, и глупенькая собачка (потомушо Лилу умная).</p>
+            <p>Хочу пожениться на тебе, сделать тебя счастливой, хочу подарить тебе все счастья мира, и показать всю свою любовь. Я очень рад что ты появилась в моей жизни.</p>
+            <p>Ты очень красивая, умненькая и смешная.</p>
+            
+            <div class="space-y-2 pl-2 border-l-2 border-pink-300 my-3 text-base sm:text-lg">
+                <p><strong>Красивая</strong> потомучто у тебя все очень и очень красивое: твои волшебные глазки, твой прекрасный носик, твоя очаровательная улыбка, очень мягкие волосы и завораживающие губы. Я очень хочу чтобы ты у меня себя моими глазами.</p>
+                <p><strong>Умненькая</strong> потомучто ты меня всему научила, всё рассказываешь, что тебе не расскажи все знаешь, уже и не помню что я тебе рассказывал что ты не знала. Даже на счёт программирования ты знала базу.</p>
+                <p><strong>Смешная</strong> потомучто ты всегда меня смешишь, хоть и не показываю это иногда, ты очень и очень смешная, мне в тебе это очень нравится, у нас похожий юмор. 😂</p>
+            </div>
+
+            <p>Ты самый светлый человек в моей жизни, мой типаж, мой лучик солнышка, с тобой всегда так тепло и хорошо, хочу чтобы это никогда не заканчивалось. ☀️✨</p>
+
+            <!-- СОВМЕСТНОЕ ФОТО ВШИТО НАПРЯМУЮ -->
+            <div class="pt-4 flex flex-col items-center">
+                <div class="p-2 bg-white shadow-md rounded-xl transform -rotate-2">
+                    <img id="couple-img" class="w-full max-w-xs rounded-lg object-cover" alt="Мы вместе">
+                    <p class="text-center font-handwriting text-gray-600 text-base mt-2">мы вместе ❤️</p>
+                </div>
+            </div>
+
+            <button onclick="goToOptions()" 
+                    class="w-full mt-6 bg-rose-500 hover:bg-rose-600 text-white font-sans py-3 rounded-2xl shadow-lg transition-all active:scale-95 text-base">
+                Хорошо ❤️
+            </button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 4: ВЫБОР СВИДАНИЯ -->
+    <div id="screen-options" class="w-full max-w-md glass-card rounded-3xl p-6 sm:p-8 z-10 hidden transition-all duration-500">
+        <h2 class="text-2xl text-center font-light mb-6 text-pink-100">Что будем делать?</h2>
+        
+        <div class="space-y-3">
+            <button onclick="selectOption('компы')" class="option-btn w-full text-left p-4 rounded-2xl border border-pink-500/20 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3">
+                <span class="text-2xl">💻</span>
+                <div>
+                    <div class="font-medium">Компы</div>
+                    <div class="text-xs text-pink-300/60">поиграем во что-нибудь вместе</div>
+                </div>
+            </button>
+            <button onclick="selectOption('кино')" class="option-btn w-full text-left p-4 rounded-2xl border border-pink-500/20 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3">
+                <span class="text-2xl">🍿</span>
+                <div>
+                    <div class="font-medium">Кино</div>
+                    <div class="text-xs text-pink-300/60">уютный просмотр фильма</div>
+                </div>
+            </button>
+            <button onclick="selectOption('сходить покушать')" class="option-btn w-full text-left p-4 rounded-2xl border border-pink-500/20 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3">
+                <span class="text-2xl">🍕</span>
+                <div>
+                    <div class="font-medium">Сходить покушать</div>
+                    <div class="text-xs text-pink-300/60">вкусное свидание</div>
+                </div>
+            </button>
+            <button onclick="selectOption('погулять вместе')" class="option-btn w-full text-left p-4 rounded-2xl border border-pink-500/20 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3">
+                <span class="text-2xl">✨</span>
+                <div>
+                    <div class="font-medium">Погулять вместе</div>
+                    <div class="text-xs text-pink-300/60">и хорошо провести время вдвоем</div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 5: ВЫБОР ДАТЫ И ВРЕМЕНИ -->
+    <div id="screen-datetime" class="w-full max-w-md glass-card rounded-3xl p-6 sm:p-8 z-10 hidden transition-all duration-500 space-y-6">
+        <h2 class="text-2xl text-center font-light text-pink-100">Когда?</h2>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs text-pink-300/70 mb-2">Выбери дату:</label>
+                <input type="date" id="date-picker" class="w-full bg-white/10 border border-pink-500/30 rounded-2xl px-4 py-3 text-white focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs text-pink-300/70 mb-2">Выбери время:</label>
+                <input type="time" id="time-picker" class="w-full bg-white/10 border border-pink-500/30 rounded-2xl px-4 py-3 text-white focus:outline-none">
+            </div>
+        </div>
+
+        <button onclick="finishPlanning()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 py-3 rounded-2xl font-medium shadow-lg transition-all active:scale-95">
+            Готово ❤️
+        </button>
+    </div>
+
+    <!-- ЭКРАН 6: ФИНАЛ И АРТ ИЗ СИМВОЛОВ -->
+    <div id="screen-final" class="w-full max-w-md glass-card rounded-3xl p-6 z-10 hidden text-center space-y-4">
+        <div class="relative overflow-hidden rounded-2xl bg-black/40 p-2 flex justify-center">
+            <canvas id="ascii-canvas" class="max-w-full rounded-xl"></canvas>
+        </div>
+
+        <div id="summary-card" class="bg-white/10 p-4 rounded-2xl text-left space-y-1 border border-pink-500/20">
+            <div class="text-xs text-pink-300/70">Договорились:</div>
+            <div id="summary-plan" class="text-lg font-medium text-pink-100"></div>
+            <div id="summary-time" class="text-sm text-pink-200/80"></div>
+        </div>
+
+        <button onclick="sharePlan()" class="w-full bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 py-3 rounded-2xl text-sm transition-all">
+            Поделиться / Сохранить ✨
+        </button>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // State
-            const state = {
-                step: 1,
-                selectedActivity: '',
-                selectedDate: '',
-                selectedTime: ''
-            };
+        // ДАННЫЕ ИЗОБРАЖЕНИЙ (ВШИТЫ В KОД)
+        const COUPLE_IMG_SRC = "data:image/jpeg;base64,..."; // [Вшитый код совместной фотографии]
+        const HER_IMG_SRC = "data:image/jpeg;base64,...";     // [Вшитый код фотографии Даши]
 
-            // DOM Elements
-            const passwordInput = document.getElementById('password-input');
-            const unlockBtn = document.getElementById('unlock-btn');
-            const errorMsg = document.getElementById('error-msg');
-            
-            const envelopeBtn = document.getElementById('envelope-btn');
-            const envelopeClosedState = document.getElementById('envelope-closed-state');
-            const letterOpenState = document.getElementById('letter-open-state');
-            const toStep3Btn = document.getElementById('to-step-3-btn');
+        let selectedOption = "";
 
-            const activityOpts = document.querySelectorAll('.activity-opt');
-            const sub3a = document.getElementById('sub-3a');
-            const sub3b = document.getElementById('sub-3b');
-            const sub3c = document.getElementById('sub-3c');
-            const dateOptionsContainer = document.getElementById('date-options-container');
-            const timeOptionsContainer = document.getElementById('time-options-container');
-            const toTimeBtn = document.getElementById('to-time-btn');
-            const toStep4Btn = document.getElementById('to-step-4-btn');
-
-            const counterNum = document.getElementById('counter-num');
-            const summaryActivity = document.getElementById('summary-activity');
-            const summaryDatetime = document.getElementById('summary-datetime');
-            const shareBtn = document.getElementById('share-btn');
-
-            // Floating Hearts Generator
-            const particlesContainer = document.getElementById('particles-container');
-            function createFloatingHeart() {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart text-pink-500/30';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                heart.style.fontSize = (Math.random() * 14 + 12) + 'px';
-                heart.innerHTML = '❤️';
-                particlesContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 10000);
+        // Проверка пароля
+        function handleUnlock(e) {
+            e.preventDefault();
+            const val = document.getElementById('answer-input').value.trim().toLowerCase();
+            if (val === 'репосты') {
+                document.getElementById('screen-lock').classList.add('hidden');
+                document.getElementById('screen-envelope').classList.remove('hidden');
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
             }
-            setInterval(createFloatingHeart, 600);
+        }
 
-            function checkPassword() {
-                const val = passwordInput.value.trim().toLowerCase();
-                if (val === 'репосты') {
-                    errorMsg.classList.add('hidden');
-                    goToStep(2);
-                } else {
-                    errorMsg.classList.remove('hidden');
-                    passwordInput.classList.add('border-red-500');
-                    setTimeout(() => passwordInput.classList.remove('border-red-500'), 1000);
-                }
-            }
+        // Открытие письма
+        function openLetter() {
+            document.getElementById('couple-img').src = COUPLE_IMG_SRC;
+            document.getElementById('screen-envelope').classList.add('hidden');
+            document.getElementById('screen-letter').classList.remove('hidden');
+        }
 
-            unlockBtn.addEventListener('click', checkPassword);
-            passwordInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') checkPassword();
-            });
+        // Переход к выбору действий
+        function goToOptions() {
+            document.getElementById('screen-letter').classList.add('hidden');
+            document.getElementById('screen-options').classList.remove('hidden');
+        }
 
-            envelopeBtn.addEventListener('click', () => {
-                envelopeClosedState.classList.add('hidden');
-                letterOpenState.classList.remove('hidden');
-                letterOpenState.classList.add('flex');
-            });
+        // Выбор варианта свидания
+        function selectOption(opt) {
+            selectedOption = opt;
+            document.getElementById('screen-options').classList.add('hidden');
+            document.getElementById('screen-datetime').classList.remove('hidden');
+        }
 
-            toStep3Btn.addEventListener('click', () => {
-                generateDateOptions();
-                goToStep(3);
-            });
+        // Завершение планирования и отрисовка портрета
+        function finishPlanning() {
+            const dateVal = document.getElementById('date-picker').value;
+            const timeVal = document.getElementById('time-picker').value;
 
-            // Activity Choice
-            activityOpts.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    state.selectedActivity = btn.getAttribute('data-activity');
-                    sub3a.classList.add('hidden');
-                    sub3b.classList.remove('hidden');
-                    sub3b.classList.add('flex');
-                });
-            });
+            document.getElementById('summary-plan').innerText = selectedOption;
+            document.getElementById('summary-time').innerText = (dateVal ? dateVal : "") + (timeVal ? " в " + timeVal : "");
 
-            // Generate Next 3 Days
-            function generateDateOptions() {
-                dateOptionsContainer.innerHTML = '';
-                const today = new Date();
-                const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-                const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            document.getElementById('screen-datetime').classList.add('hidden');
+            document.getElementById('screen-final').classList.remove('hidden');
 
-                for (let i = 1; i <= 3; i++) {
-                    const d = new Date();
-                    d.setDate(today.getDate() + i);
-                    
-                    const dayName = daysOfWeek[d.getDay()];
-                    const dayNum = d.getDate();
-                    const monthName = months[d.getMonth()];
-                    const dateStr = `${dayNum} ${monthName} (${dayName})`;
+            renderAsciiArt();
+        }
 
-                    const btn = document.createElement('button');
-                    btn.className = 'date-opt w-full py-4 px-5 rounded-2xl bg-pink-950/40 border border-pink-500/30 text-pink-100 text-left font-medium transition-all';
-                    btn.innerText = dateStr;
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.date-opt').forEach(b => {
-                            b.classList.remove('bg-pink-600/50', 'border-pink-400');
-                        });
-                        btn.classList.add('bg-pink-600/50', 'border-pink-400');
-                        state.selectedDate = dateStr;
-                        toTimeBtn.disabled = false;
-                        toTimeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    });
-                    dateOptionsContainer.appendChild(btn);
-                }
-            }
+        // Генерация портрета из символов на основе фото Даши
+        function renderAsciiArt() {
+            const canvas = document.getElementById('ascii-canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.src = HER_IMG_SRC;
 
-            toTimeBtn.addEventListener('click', () => {
-                sub3b.classList.add('hidden');
-                sub3c.classList.remove('hidden');
-                sub3c.classList.add('flex');
-            });
+            img.onload = () => {
+                const w = 300;
+                const h = Math.floor(300 * (img.height / img.width));
+                canvas.width = w;
+                canvas.height = h;
 
-            // Time Choice
-            timeOptionsContainer.querySelectorAll('.time-opt').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    timeOptionsContainer.querySelectorAll('.time-opt').forEach(b => {
-                        b.classList.remove('bg-pink-600/50', 'border-pink-400');
-                    });
-                    btn.classList.add('bg-pink-600/50', 'border-pink-400');
-                    state.selectedTime = btn.innerText;
-                    toStep4Btn.disabled = false;
-                    toStep4Btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                });
-            });
+                ctx.drawImage(img, 0, 0, w, h);
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const data = imgData.data;
 
-            toStep4Btn.addEventListener('click', () => {
-                summaryActivity.innerHTML = `<span>✨</span><span>${state.selectedActivity}</span>`;
-                summaryDatetime.innerHTML = `<span>📅</span><span>${state.selectedDate} • ${state.selectedTime}</span>`;
-                goToStep(4);
-                renderASCIIArt();
-            });
+                ctx.fillStyle = '#0f051d';
+                ctx.fillRect(0, 0, w, h);
 
-            function renderASCIIArt() {
-                const canvas = document.getElementById('ascii-canvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Set resolution
-                const width = 300;
-                const height = 375;
-                canvas.width = width;
-                canvas.height = height;
+                ctx.fillStyle = '#f472b6';
+                ctx.font = '7px monospace';
 
-                const img = new Image();
-                img.src = '22159.jpg';
-                img.onerror = () => {
-                    // Fallback placeholder image render if local image isn't loaded
-                    img.src = 'https://placehold.co/300x375/be185d/ffffff?text=Даша+❤️';
-                };
+                const chars = "Даша❤️";
+                let charIdx = 0;
 
-                img.onload = () => {
-                    // Draw image offscreen to get pixel brightness
-                    const offCanvas = document.createElement('canvas');
-                    offCanvas.width = width;
-                    offCanvas.height = height;
-                    const offCtx = offCanvas.getContext('2d');
-                    offCtx.drawImage(img, 0, 0, width, height);
-                    
-                    const imgData = offCtx.getImageData(0, 0, width, height).data;
-                    
-                    ctx.fillStyle = '#0b030a';
-                    ctx.fillRect(0, 0, width, height);
-
-                    const fontSize = 7;
-                    ctx.font = `${fontSize}px monospace`;
-                    
-                    const chars = 'Д А Ш А ❤️ ✨ 🔥 💕';
-                    const charArr = chars.split(' ');
-
-                    let currentY = 0;
-                    let targetCount = 1450;
-                    let countVal = 0;
-
-                    // Counter animation
-                    const countInterval = setInterval(() => {
-                        countVal += 25;
-                        if (countVal >= targetCount) {
-                            countVal = targetCount;
-                            clearInterval(countInterval);
+                for (let y = 0; y < h; y += 6) {
+                    for (let x = 0; x < w; x += 5) {
+                        const i = (y * w + x) * 4;
+                        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                        if (brightness > 40) {
+                            ctx.fillStyle = `rgba(244, 114, 182, ${brightness / 255})`;
+                            ctx.fillText(chars[charIdx % chars.length], x, y);
+                            charIdx++;
                         }
-                        counterNum.innerText = countVal;
-                    }, 30);
-
-                    // Progressive ASCII matrix reveal animation
-                    function animateMatrix() {
-                        if (currentY >= height) return;
-
-                        for (let x = 0; x < width; x += fontSize - 1) {
-                            const i = (Math.floor(currentY) * width + Math.floor(x)) * 4;
-                            const r = imgData[i];
-                            const g = imgData[i + 1];
-                            const b = imgData[i + 2];
-                            const brightness = (r + g + b) / 3;
-
-                            if (brightness > 20) {
-                                const char = charArr[Math.floor(Math.random() * charArr.length)];
-                                ctx.fillStyle = `rgb(${r}, ${g/2}, ${b})`;
-                                ctx.fillText(char, x, currentY);
-                            }
-                        }
-                        currentY += fontSize;
-                        requestAnimationFrame(animateMatrix);
                     }
-
-                    animateMatrix();
-                };
-            }
-
-            function goToStep(stepNum) {
-                document.querySelectorAll('.page-step').forEach(el => {
-                    el.classList.add('hidden-step');
-                });
-                const nextStep = document.getElementById(`step-${stepNum}`);
-                if (nextStep) {
-                    nextStep.classList.remove('hidden-step');
                 }
-                state.step = stepNum;
-            }
+            };
+        }
 
-            // Share / Copy Summary
-            shareBtn.addEventListener('click', () => {
-                const textToCopy = `Идем на свидание! 💕\nЧем займемся: ${state.selectedActivity}\nКогда: ${state.selectedDate} в ${state.selectedTime}`;
-                
-                try {
-                    const tempInput = document.createElement('textarea');
-                    tempInput.value = textToCopy;
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    
-                    const originalText = shareBtn.innerHTML;
-                    shareBtn.innerHTML = '<span>Скопировано в буфер! ✨</span>';
-                    setTimeout(() => {
-                        shareBtn.innerHTML = originalText;
-                    }, 2000);
-                } catch (e) {
-                    console.log('Copy failed', e);
-                }
-            });
-        });
+        // Создание фоновых летящих сердечек
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle text-pink-400/40';
+                heart.innerText = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random() * 4)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 6000);
+            }, 500);
+        }
+
+        createHearts();
     </script>
 </body>
 </html>
