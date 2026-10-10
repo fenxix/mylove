@@ -91,10 +91,10 @@
 
             <p>Ты самый светлый человек в моей жизни, мой типаж, мой лучик солнышка, с тобой всегда так тепло и хорошо, хочу чтобы это никогда не заканчивалось. ☀️✨</p>
 
-            <!-- СОВМЕСТНОЕ ФОТО ВШИТО НАПРЯМУЮ -->
+            <!-- ЛОКАЛЬНОЕ ФОТО ВШИТО НАПРЯМУЮ -->
             <div class="pt-4 flex flex-col items-center">
                 <div class="p-2 bg-white shadow-md rounded-xl transform -rotate-2">
-                    <img id="couple-img" class="w-full max-w-xs rounded-lg object-cover" alt="Мы вместе">
+                    <img id="couple-img" src="couple.jpg" class="w-full max-w-xs rounded-lg object-cover" alt="Мы вместе">
                     <p class="text-center font-handwriting text-gray-600 text-base mt-2">мы вместе ❤️</p>
                 </div>
             </div>
@@ -173,17 +173,9 @@
             <div id="summary-plan" class="text-lg font-medium text-pink-100"></div>
             <div id="summary-time" class="text-sm text-pink-200/80"></div>
         </div>
-
-        <button onclick="sharePlan()" class="w-full bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 py-3 rounded-2xl text-sm transition-all">
-            Поделиться / Сохранить ✨
-        </button>
     </div>
 
     <script>
-        // ДАННЫЕ ИЗОБРАЖЕНИЙ (ВШИТЫ В KОД)
-        const COUPLE_IMG_SRC = "data:image/jpeg;base64,..."; // [Вшитый код совместной фотографии]
-        const HER_IMG_SRC = "data:image/jpeg;base64,...";     // [Вшитый код фотографии Даши]
-
         let selectedOption = "";
 
         // Проверка пароля
@@ -200,7 +192,6 @@
 
         // Открытие письма
         function openLetter() {
-            document.getElementById('couple-img').src = COUPLE_IMG_SRC;
             document.getElementById('screen-envelope').classList.add('hidden');
             document.getElementById('screen-letter').classList.remove('hidden');
         }
@@ -232,12 +223,12 @@
             renderAsciiArt();
         }
 
-        // Генерация портрета из символов на основе фото Даши
+        // Генерация портрета из символов на основе локального фото her.jpg
         function renderAsciiArt() {
             const canvas = document.getElementById('ascii-canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
-            img.src = HER_IMG_SRC;
+            img.src = "her.jpg";
 
             img.onload = () => {
                 const w = 300;
@@ -252,7 +243,6 @@
                 ctx.fillStyle = '#0f051d';
                 ctx.fillRect(0, 0, w, h);
 
-                ctx.fillStyle = '#f472b6';
                 ctx.font = '7px monospace';
 
                 const chars = "Даша❤️";
